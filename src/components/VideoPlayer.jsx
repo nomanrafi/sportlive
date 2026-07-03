@@ -32,6 +32,17 @@ export default function VideoPlayer({ streamUrl, backupUrl, onLogAction, liveVie
   // Track buffering start time to avoid false positives
   const bufferingStartRef = useRef(null);
 
+  // Proxy helper: route streams through /api/stream on production to bypass CORS
+  const proxyUrl = (url) => {
+    if (!url) return url;
+    const isLocalhost =
+      typeof window !== "undefined" &&
+      (window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1");
+    if (isLocalhost) return url; // dev: use direct URL
+    return `/api/stream?url=${encodeURIComponent(url)}`; // prod: proxy
+  };
+
   // Handle click outside for quality menu
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -59,7 +70,7 @@ export default function VideoPlayer({ streamUrl, backupUrl, onLogAction, liveVie
       hlsRef.current = null;
     }
 
-    const activeUrl = usingBackup ? backupUrl : streamUrl;
+    const activeUrl = proxyUrl(usingBackup ? backupUrl : streamUrl);
 
     const handleWaiting = () => {
       setBuffering(true);
