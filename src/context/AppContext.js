@@ -7,17 +7,17 @@ const AppContext = createContext();
 
 const DEFAULT_CHANNELS = [
   {
-    id: "espn",
-    name: "ESPN Live",
-    logo: "/logos/espn.svg",
-    videoUrl: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8",
-    backupUrl: "https://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8",
+    id: "demo-channel",
+    name: "Demo Test Channel",
+    logo: "/logos/espn.svg", // Change this to your logo path
+    videoUrl: "http://line.watchtivo-8k.com/hls/7017fe09671632e357ced37bea9a70d6/944688_22.ts", // Your m3u8 link here
+    backupUrl: "", 
     status: "online",
     viewers: "0",
-    group: "Sports US",
-    description: "ESPN is the leading sports channel in the United States, bringing you live NFL, NBA, MLB, and MLS matches with expert analysis.",
-    uptime: "99.98%",
-    bufferingRate: "0.2%",
+    group: "Test Group",
+    description: "This is a demo channel for testing local m3u8 links.",
+    uptime: "100%",
+    bufferingRate: "0%",
   },
   {
     id: "bein-sports",
@@ -152,16 +152,9 @@ export const AppProvider = ({ children }) => {
     }
     if (savedLanguage) setLanguage(savedLanguage);
 
-    // --- Load channels from Supabase ---
-    const loadChannels = async () => {
-      const { data, error } = await supabase.from('channels').select('*');
-      if (!error && data && data.length > 0) {
-        setChannels(data);
-      } else {
-        // Fallback: seed Supabase with DEFAULT_CHANNELS if empty
-        const { error: insertErr } = await supabase.from('channels').upsert(DEFAULT_CHANNELS);
-        if (!insertErr) setChannels(DEFAULT_CHANNELS);
-      }
+    // --- Load channels (Currently using Local Hardcoded for Testing) ---
+    const loadChannels = () => {
+      setChannels(DEFAULT_CHANNELS);
     };
 
     // --- Load admin-added fixtures from Supabase ---
