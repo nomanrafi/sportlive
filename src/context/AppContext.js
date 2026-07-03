@@ -10,8 +10,8 @@ const DEFAULT_CHANNELS = [
     id: "demo-channel",
     name: "TSN",
     logo: "https://i.imgur.com/Pai5oUE.png", // Change this to your logo path
-    videoUrl: "http://193.225.32.62:8890/live.m3u8", // Your m3u8 link here
-    backupUrl: "http://193.225.32.62:8890/live.m3u8",
+    videoUrl: "/assets/index.m3u8", // Your m3u8 link here
+    backupUrl: "/assets/index.m3u8",
     status: "online",
     viewers: "0",
     group: "Test Group",
