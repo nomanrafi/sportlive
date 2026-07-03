@@ -13,7 +13,7 @@ export default function AdminDashboard() {
   const {
     channels, addChannel, updateChannel, deleteChannel,
     fixtures, addFixture, updateFixture, deleteFixture,
-    liveViewersCount, peakViewers, systemLogs, logAction,
+    liveViewersCount, peakViewers, totalVisitors, totalViews, systemLogs, logAction,
     deviceStats, locationStats
   } = useApp();
 
@@ -254,19 +254,16 @@ export default function AdminDashboard() {
                   <p className="text-xl font-black text-white">{liveViewersCount.toLocaleString()}</p>
                 </div>
                 <div className="rounded-2xl bg-zinc-900 border border-zinc-800 p-5 space-y-2">
+                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Unique Visitors</span>
+                  <p className="text-xl font-black text-white">{totalVisitors ? totalVisitors.toLocaleString() : "..."}</p>
+                </div>
+                <div className="rounded-2xl bg-zinc-900 border border-zinc-800 p-5 space-y-2">
+                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Total Views</span>
+                  <p className="text-xl font-black text-white">{totalViews ? totalViews.toLocaleString() : "..."}</p>
+                </div>
+                <div className="rounded-2xl bg-zinc-900 border border-zinc-800 p-5 space-y-2">
                   <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Peak Viewers</span>
                   <p className="text-xl font-black text-white">{peakViewers.toLocaleString()}</p>
-                </div>
-                <div className="rounded-2xl bg-zinc-900 border border-zinc-800 p-5 space-y-2">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Active Channels</span>
-                  <p className="text-xl font-black text-brand">{channels.length}</p>
-                </div>
-                <div className="rounded-2xl bg-zinc-900 border border-zinc-800 p-5 space-y-2">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">System Health</span>
-                  <p className="text-xl font-black text-emerald-500 flex items-center gap-1">
-                    <CheckCircle size={18} />
-                    99.9%
-                  </p>
                 </div>
               </div>
 

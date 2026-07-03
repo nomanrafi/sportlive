@@ -2,9 +2,10 @@
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Hls from "hls.js";
-import { Play, Pause, Volume2, VolumeX, Maximize, ChevronUp } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, ChevronUp } from "lucide-react";
 
 export default function VideoPlayer({ streamUrl, backupUrl, onLogAction, liveViewersCount, onAutoSwitchNext }) {
+  const containerRef = useRef(null);
   const videoRef = useRef(null);
   const hlsRef = useRef(null);
   const onLogActionRef = useRef(onLogAction);
@@ -27,6 +28,7 @@ export default function VideoPlayer({ streamUrl, backupUrl, onLogAction, liveVie
   const [currentLevel, setCurrentLevel] = useState(-1);
   const [usingBackup, setUsingBackup] = useState(false);
   const [showQualityMenu, setShowQualityMenu] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const qualityMenuRef = useRef(null);
 
   // Track buffering start time to avoid false positives
@@ -189,15 +191,35 @@ export default function VideoPlayer({ streamUrl, backupUrl, onLogAction, liveVie
   };
 
   const triggerFullscreen = () => {
-    const el = videoRef.current;
+    const el = containerRef.current;
     if (!el) return;
-    if (el.requestFullscreen) el.requestFullscreen();
-    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-    else if (el.msRequestFullscreen) el.msRequestFullscreen();
+    if (!document.fullscreenElement) {
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      else if (el.msRequestFullscreen) el.msRequestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.msExitFullscreen) document.msExitFullscreen();
+    }
   };
 
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+    document.addEventListener("msfullscreenchange", onFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", onFullscreenChange);
+      document.removeEventListener("msfullscreenchange", onFullscreenChange);
+    };
+  }, []);
+
   return (
-    <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-black border border-zinc-800 shadow-2xl group/player">
+    <div ref={containerRef} className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-black border border-zinc-800 shadow-2xl group/player">
 
       {/* Live Views Overlay - Top Center */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
@@ -316,7 +338,7 @@ export default function VideoPlayer({ streamUrl, backupUrl, onLogAction, liveVie
             </div>
 
             <button onClick={triggerFullscreen} className="text-zinc-400 hover:text-white transition-colors cursor-pointer" title="Fullscreen">
-              <Maximize size={18} />
+              {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
             </button>
           </div>
         </div>

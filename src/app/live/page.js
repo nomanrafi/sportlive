@@ -293,7 +293,6 @@ function LivePageContent() {
                     placeholder="Your Name..."
                     maxLength={20}
                     className="w-full rounded-xl bg-zinc-950 border border-zinc-800 px-3 py-2.5 text-xs font-bold text-white focus:border-brand/50 outline-none text-center transition-all"
-                    autoFocus
                   />
                   <button type="submit" disabled={!chatUsername.trim()} className="w-full bg-brand hover:bg-brand-hover text-white text-xs font-extrabold py-2.5 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                     Start Chatting

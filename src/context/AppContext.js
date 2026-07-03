@@ -127,6 +127,10 @@ export const AppProvider = ({ children }) => {
   const [deviceStats, setDeviceStats] = useState({});
   const [locationStats, setLocationStats] = useState({});
 
+  // Site Stats (All-time tracking)
+  const [totalVisitors, setTotalVisitors] = useState(0);
+  const [totalViews, setTotalViews] = useState(0);
+
   // Live Chat Storage
   const [chatMessages, setChatMessages] = useState([]);
 
@@ -170,7 +174,33 @@ export const AppProvider = ({ children }) => {
     loadChannels();
     loadFixtures();
 
-    // --- Subscribe to Supabase realtime for channels & fixtures ---
+    // --- Load and track Site Stats ---
+    const trackAndLoadStats = async () => {
+      const hasVisited = localStorage.getItem("sl_has_visited");
+      const { data, error } = await supabase.from('site_stats').select('*').eq('id', 1).single();
+      
+      if (!error && data) {
+        let newVisitors = data.total_visitors;
+        let newViews = data.total_views + 1;
+        
+        if (!hasVisited) {
+          newVisitors += 1;
+          localStorage.setItem("sl_has_visited", "true");
+        }
+        
+        setTotalVisitors(newVisitors);
+        setTotalViews(newViews);
+        
+        // Update DB without waiting
+        supabase.from('site_stats').update({
+          total_visitors: newVisitors,
+          total_views: newViews
+        }).eq('id', 1).then();
+      }
+    };
+    trackAndLoadStats();
+
+    // --- Subscribe to Supabase realtime for channels & fixtures & stats ---
     const channelSub = supabase
       .channel('public:channels')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'channels' }, () => {
@@ -185,9 +215,20 @@ export const AppProvider = ({ children }) => {
       })
       .subscribe();
 
+    const statsSub = supabase
+      .channel('public:site_stats')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_stats' }, (payload) => {
+        if (payload.new) {
+          setTotalVisitors(payload.new.total_visitors);
+          setTotalViews(payload.new.total_views);
+        }
+      })
+      .subscribe();
+
     return () => {
       supabase.removeChannel(channelSub);
       supabase.removeChannel(fixtureSub);
+      supabase.removeChannel(statsSub);
     };
   }, []);
 
@@ -620,6 +661,8 @@ export const AppProvider = ({ children }) => {
     theme,
     language,
     liveViewersCount,
+    totalVisitors,
+    totalViews,
     peakViewers,
     activeChannelId,
     setActiveChannelId,
@@ -642,7 +685,7 @@ export const AppProvider = ({ children }) => {
     deleteFixture,
   }), [
     channelsWithRealViewers, fixtures, highlights, favorites, watchHistory,
-    bookmarks, theme, language, liveViewersCount, peakViewers, activeChannelId,
+    bookmarks, theme, language, liveViewersCount, totalVisitors, totalViews, peakViewers, activeChannelId,
     chatMessages, systemLogs, deviceStats, locationStats,
     toggleFavorite, addToHistory, toggleBookmark,
     handleSetTheme, handleSetLanguage, logAction,
