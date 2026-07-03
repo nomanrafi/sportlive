@@ -8,10 +8,10 @@ const AppContext = createContext();
 const DEFAULT_CHANNELS = [
   {
     id: "demo-channel",
-    name: "TSN",
+    name: "TSNa",
     logo: "https://i.imgur.com/Pai5oUE.png", // Change this to your logo path
-    videoUrl: "/assets/index.m3u8", // Your m3u8 link here
-    backupUrl: "/assets/index.m3u8",
+    videoUrl: "https://cdn.devmaxwell.site/channel/wtv", // Your m3u8 link here
+    backupUrl: "https://cdn.devmaxwell.site/channel/wtv",
     status: "online",
     viewers: "0",
     group: "Test Group",
