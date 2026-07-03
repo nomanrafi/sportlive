@@ -41,8 +41,11 @@ function LivePageContent() {
   }, []);
 
   useEffect(() => {
-    const channelId = activeChannelParam || "espn";
-    const found = channels.find((c) => c.id === channelId) || channels[0];
+    if (!channels || channels.length === 0) return;
+    const channelId = activeChannelParam;
+    const found = channelId
+      ? channels.find((c) => c.id === channelId) || channels[0]
+      : channels[0];
     setActiveChannel(found);
     if (found) {
       setActiveChannelId(found.id);

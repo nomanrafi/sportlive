@@ -20,6 +20,7 @@ export default function VideoPlayer({ streamUrl, backupUrl, onLogAction, liveVie
   const [volume, setVolume] = useState(0.8);
   const [isMuted, setIsMuted] = useState(false);
   const [buffering, setBuffering] = useState(true);
+  const [streamOffline, setStreamOffline] = useState(false);
 
   // Quality Switcher States
   const [levels, setLevels] = useState([]);
@@ -51,6 +52,7 @@ export default function VideoPlayer({ streamUrl, backupUrl, onLogAction, liveVie
 
     setBuffering(true);
     setIsPlaying(false);
+    setStreamOffline(false);
 
     if (hlsRef.current) {
       hlsRef.current.destroy();
@@ -100,11 +102,12 @@ export default function VideoPlayer({ streamUrl, backupUrl, onLogAction, liveVie
               hls.recoverMediaError();
               break;
             default:
-              if (!usingBackup && backupUrl) {
+              if (!usingBackup && backupUrl && backupUrl !== streamUrl) {
                 setUsingBackup(true);
                 if (onLogActionRef.current) onLogActionRef.current("Stream Failover", "Primary failed. Switching to backup.");
               } else {
                 setBuffering(false);
+                setStreamOffline(true);
                 if (onLogActionRef.current) onLogActionRef.current("Stream Critical Error", "Both stream links failed.");
               }
               break;
@@ -231,8 +234,22 @@ export default function VideoPlayer({ streamUrl, backupUrl, onLogAction, liveVie
         playsInline
       />
 
+      {/* Stream Offline Overlay */}
+      {streamOffline && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 z-10 gap-4">
+          <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          </div>
+          <div className="text-center">
+            <p className="text-white font-extrabold text-sm uppercase tracking-widest">Stream Offline</p>
+            <p className="text-zinc-500 text-xs mt-1 font-bold">This channel is currently unavailable.</p>
+            <p className="text-zinc-600 text-[10px] mt-0.5">Try updating the stream URL from Admin Panel.</p>
+          </div>
+        </div>
+      )}
+
       {/* Buffering Loader Overlay */}
-      {buffering && (
+      {buffering && !streamOffline && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-10 gap-3">
           <div className="relative flex items-center justify-center">
             <span className="absolute h-12 w-12 rounded-full border-2 border-brand border-t-transparent animate-spin"></span>
