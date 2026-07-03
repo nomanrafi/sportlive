@@ -177,25 +177,35 @@ export const AppProvider = ({ children }) => {
     // --- Load and track Site Stats ---
     const trackAndLoadStats = async () => {
       const hasVisited = localStorage.getItem("sl_has_visited");
+      const hasSession = sessionStorage.getItem("sl_session");
       const { data, error } = await supabase.from('site_stats').select('*').eq('id', 1).single();
       
       if (!error && data) {
         let newVisitors = data.total_visitors;
-        let newViews = data.total_views + 1;
+        let newViews = data.total_views;
+        let shouldUpdateDb = false;
         
         if (!hasVisited) {
           newVisitors += 1;
           localStorage.setItem("sl_has_visited", "true");
+          shouldUpdateDb = true;
+        }
+
+        if (!hasSession) {
+          newViews += 1;
+          sessionStorage.setItem("sl_session", "true");
+          shouldUpdateDb = true;
         }
         
         setTotalVisitors(newVisitors);
         setTotalViews(newViews);
         
-        // Update DB without waiting
-        supabase.from('site_stats').update({
-          total_visitors: newVisitors,
-          total_views: newViews
-        }).eq('id', 1).then();
+        if (shouldUpdateDb) {
+          supabase.from('site_stats').update({
+            total_visitors: newVisitors,
+            total_views: newViews
+          }).eq('id', 1).then();
+        }
       }
     };
     trackAndLoadStats();
