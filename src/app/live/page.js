@@ -100,11 +100,12 @@ function LivePageContent() {
   const isFav = activeChannel && favorites.includes(activeChannel.id);
 
   const handleAutoSwitchNext = () => {
-    const currentIndex = filteredChannels.findIndex((c) => c.id === activeChannelId);
+    const currentIndex = filteredChannels.findIndex((c) => c.id === activeChannel?.id);
     if (currentIndex !== -1 && filteredChannels.length > 1) {
       const nextIndex = (currentIndex + 1) % filteredChannels.length;
-      setActiveChannelId(filteredChannels[nextIndex].id);
-      logAction("Auto-Switch Triggered", `Switched from ${filteredChannels[currentIndex].name} to ${filteredChannels[nextIndex].name}`);
+      const nextChannel = filteredChannels[nextIndex];
+      selectChannel(nextChannel.id);
+      logAction("Auto-Switch Triggered", `Switched from ${filteredChannels[currentIndex].name} to ${nextChannel.name}`);
     }
   };
 
