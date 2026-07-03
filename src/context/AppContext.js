@@ -9,9 +9,9 @@ const DEFAULT_CHANNELS = [
   {
     id: "demo-channel",
     name: "Demo Test Channel",
-    logo: "/logos/espn.svg", // Change this to your logo path
-    videoUrl: "http://line.watchtivo-8k.com/hls/7017fe09671632e357ced37bea9a70d6/944688_22.ts", // Your m3u8 link here
-    backupUrl: "", 
+    logo: "https://i.imgur.com/Pai5oUE.png", // Change this to your logo path
+    videoUrl: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8", // Your m3u8 link here
+    backupUrl: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8",
     status: "online",
     viewers: "0",
     group: "Test Group",
@@ -110,7 +110,7 @@ export const AppProvider = ({ children }) => {
   const [channels, setChannels] = useState(DEFAULT_CHANNELS);
   const [fixtures, setFixtures] = useState(DEFAULT_FIXTURES);
   const [highlights, setHighlights] = useState(DEFAULT_HIGHLIGHTS);
-  
+
   // User Personalization States
   const [favorites, setFavorites] = useState([]);
   const [watchHistory, setWatchHistory] = useState([]);
@@ -227,7 +227,7 @@ export const AppProvider = ({ children }) => {
               const away = competitors.find(c => c.homeAway === "away") || competitors[1];
               const rawDate = event.date;
               const d = new Date(rawDate);
-              
+
               // Skip old matches (older than 24 hours ago)
               if (Date.now() - d.getTime() > 24 * 60 * 60 * 1000) return;
 
@@ -279,7 +279,7 @@ export const AppProvider = ({ children }) => {
         const response = await fetch("https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.youtube.com%2Ffeeds%2Fvideos.xml%3Fchannel_id%3DUCpcTrCXblq78GZrTUTLWeBw", { cache: "no-store" });
         if (!response.ok) return;
         const data = await response.json();
-        
+
         if (data.status === "ok" && data.items && data.items.length > 0) {
           const newHighlights = data.items
             .filter(item => !item.title.toLowerCase().includes("shorts") && !item.link.includes("shorts"))
@@ -296,7 +296,7 @@ export const AppProvider = ({ children }) => {
                 youtubeId: youtubeId
               };
             });
-            
+
           if (newHighlights.length > 0) {
             setHighlights(newHighlights);
           }
@@ -305,7 +305,7 @@ export const AppProvider = ({ children }) => {
         console.warn("Failed to fetch FIFA highlights:", err);
       }
     };
-    
+
     fetchFIFAHighlights();
 
     // Log startup
@@ -383,7 +383,7 @@ export const AppProvider = ({ children }) => {
         .gte('created_at', oneHourAgo)
         .order('created_at', { ascending: false })
         .limit(50);
-      
+
       if (data) {
         setChatMessages(data.reverse().map(msg => ({
           id: msg.id,
@@ -431,13 +431,13 @@ export const AppProvider = ({ children }) => {
             if (timeZone.includes('Dubai')) return "UAE";
             return city || "Unknown";
           }
-        } catch (e) {}
+        } catch (e) { }
         return "Unknown";
       };
 
       const room = supabase.channel('global_viewers_room');
       presenceRoomRef.current = room;
-      
+
       room
         .on('presence', { event: 'sync' }, () => {
           const newState = room.presenceState();
@@ -445,7 +445,7 @@ export const AppProvider = ({ children }) => {
           const counts = {};
           const dStats = {};
           const lStats = {};
-          
+
           for (const key in newState) {
             const presences = newState[key];
             totalUsers += presences.length;
@@ -470,7 +470,7 @@ export const AppProvider = ({ children }) => {
             });
           }
         });
-        
+
       presenceSubscription = room;
     };
 
@@ -585,7 +585,7 @@ export const AppProvider = ({ children }) => {
               if (timeZone.includes('Dubai')) return "UAE";
               return city || "Unknown";
             }
-          } catch (e) {}
+          } catch (e) { }
           return "Unknown";
         };
 
