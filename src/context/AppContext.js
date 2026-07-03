@@ -20,9 +20,9 @@ const DEFAULT_CHANNELS = [
     bufferingRate: "0%",
   },
   {
-    id: "Fifa",
-    name: "beIN Sports",
-    logo: "/logos/tsports.svg",
+    id: "bein-sports",
+    name: "Fifa",
+    logo: "/logos/fox.svg",
     videoUrl: "http://fifalive.click/pc-pot.m3u",
     backupUrl: "http://fifalive.click/pc-pot.m3u",
     status: "online",
