@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120">
+  <rect width="400" height="120" fill="#cc0000" rx="15"/>
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="70" fill="white" letter-spacing="-2">ESPN</text>
+  <path d="M 50 65 L 350 65" stroke="#cc0000" stroke-width="4"/>
+</svg>

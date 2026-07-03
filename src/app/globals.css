@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #7c3aed;
+  --color-brand-hover: #6d28d9;
+  --color-brand-glow: rgba(124, 58, 237, 0.2);
+  --color-dark-bg: #030712;
+  --color-dark-surface: #0b1329;
+  --color-dark-card: #111827;
+  --color-dark-border: #1f2937;
+  
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+@utility bg-brand-gradient {
+  background: linear-gradient(135deg, #7c3aed 0%, #2563eb 50%, #00fa9e 100%);
+}
+
+@utility text-brand-gradient {
+  background: linear-gradient(135deg, #7c3aed 0%, #2563eb 50%, #00fa9e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+:root {
+  --brand: #7c3aed;
+  --brand-hover: #6d28d9;
+  --brand-glow: rgba(124, 58, 237, 0.2);
+  --dark-bg: #030712;
+  --dark-surface: #0b1329;
+  --dark-card: #111827;
+  --dark-border: #1f2937;
+}
+
+/* Base custom styles */
+body {
+  background-color: var(--dark-bg);
+  color: #f3f4f6;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism custom components */
+.glass-panel {
+  background: rgba(11, 19, 41, 0.7);
+  backdrop-filter: blur(16px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-card {
+  background: rgba(17, 24, 39, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Custom sports grid patterns */
+.sports-bg-pattern {
+  background-color: #030712;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(37, 99, 235, 0.15) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(0, 250, 158, 0.12) 0px, transparent 50%);
+  /* Removed background-attachment:fixed to prevent scroll jank */
+}
+
+/* Decorative blur glows must never catch pointer events */
+.pointer-events-none {
+  pointer-events: none !important;
+}
+
+/* Custom Scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.6);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--brand);
+}
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(75, 85, 99, 0.6) transparent;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Live indicators and pulsing */
+@keyframes sports-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.live-pulse {
+  animation: sports-pulse 2s infinite ease-in-out;
+  will-change: opacity;
+}
+
+/* Hide native controls when playing */
+video::-webkit-media-controls {
+  display: none !important;
+}
+video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+/* -------------------------------------
+   Light Mode Overrides
+-------------------------------------- */
+html.light body {
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+html.light .bg-zinc-950,
+html.light .bg-zinc-900,
+html.light .bg-zinc-800,
+html.light .bg-zinc-800\/50,
+html.light .bg-zinc-900\/60,
+html.light .bg-zinc-900\/80,
+html.light .bg-zinc-950\/80,
+html.light .bg-zinc-950\/95 {
+  background-color: #ffffff;
+  border-color: #e5e7eb;
+}
+
+html.light .text-zinc-400,
+html.light .text-zinc-300,
+html.light .text-zinc-500,
+html.light .text-zinc-450,
+html.light .text-zinc-550 {
+  color: #4b5563;
+}
+
+html.light .text-white,
+html.light .text-zinc-100,
+html.light .text-zinc-200,
+html.light .text-zinc-200 {
+  color: #111827;
+}
+
+html.light .border-zinc-800,
+html.light .border-zinc-700,
+html.light .border-zinc-900,
+html.light .border-zinc-850,
+html.light .border-zinc-950,
+html.light .border-zinc-800\/50,
+html.light .border-zinc-800\/80 {
+  border-color: #e5e7eb;
+}
+
+html.light .glass-panel,
+html.light .glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+html.light .sports-bg-pattern {
+  background-color: #f9fafb;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(37, 99, 235, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(0, 250, 158, 0.05) 0px, transparent 50%);
+}
+
+html.light .bg-zinc-700 {
+  background-color: #d1d5db;
+}
+
+html.light .hover\:text-white:hover {
+  color: #000000;
+}
