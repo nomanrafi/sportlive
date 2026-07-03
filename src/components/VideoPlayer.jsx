@@ -149,26 +149,8 @@ export default function VideoPlayer({ streamUrl, backupUrl, onLogAction, liveVie
     }
   }, [streamUrl, backupUrl, usingBackup]);
 
-  // Auto-switch: 15s stable buffering → next channel
-  useEffect(() => {
-    if (autoSwitchTimerRef.current) {
-      clearTimeout(autoSwitchTimerRef.current);
-      autoSwitchTimerRef.current = null;
-    }
-
-    if (buffering) {
-      autoSwitchTimerRef.current = setTimeout(() => {
-        if (onLogActionRef.current) onLogActionRef.current("Auto-Switch", "Buffered 15s. Switching to next channel.");
-        if (onAutoSwitchNextRef.current) onAutoSwitchNextRef.current();
-      }, 15000);
-    }
-
-    return () => {
-      if (autoSwitchTimerRef.current) {
-        clearTimeout(autoSwitchTimerRef.current);
-      }
-    };
-  }, [buffering]);
+  // Auto-switch feature disabled as per user request
+  // useEffect(() => { ... }, [buffering]);
 
   // Sync Volume
   useEffect(() => {
