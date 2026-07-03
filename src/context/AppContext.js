@@ -10,8 +10,8 @@ const DEFAULT_CHANNELS = [
     id: "demo-channel",
     name: "TSNa",
     logo: "https://i.imgur.com/Pai5oUE.png", // Change this to your logo path
-    videoUrl: "https://prod-cdn01-live.toffeelive.com/live/FIFA-2026-4/0/master_2000.m3u8?hdntl=Expires=1781889962~_GO=Generated~URLPrefix=aHR0cHM6Ly9wcm9kLWNkbjAxLWxpdmUudG9mZmVlbGl2ZS5jb20~Signature=AduQTZ__yhQoYQ9quTfH5m5S8aVHfNHn65noStJ3WkyY-eBA7y2smXsQ1P_0pKKB1Jc2CsEoHWlzkjB9zSNYr6xh7NsG", // Your m3u8 link here
-    backupUrl: "https://cdn.devmaxwell.site/channel/wtv",
+    videoUrl: "https://1nyaler.streamhostingcdn.top/stream/23/index.m3u8", // Your m3u8 link here
+    backupUrl: "https://1nyaler.streamhostingcdn.top/stream/23/index.m3u8",
     status: "online",
     viewers: "0",
     group: "Test Group",
