@@ -18,20 +18,20 @@ const DEFAULT_CHANNELS = [
     description: ".",
     uptime: "100%",
     bufferingRate: "0%",
-  }
-  // {
-  //   id: "bein-sports",
-  //   name: "beIN Sports",
-  //   logo: "/logos/bein.svg",
-  //   videoUrl: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-  //   backupUrl: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8",
-  //   status: "online",
-  //   viewers: "0",
-  //   group: "Sports Europe",
-  //   description: "beIN Sports is the premier destination for international soccer, featuring La Liga, Ligue 1, Serie A, and UEFA Champions League.",
-  //   uptime: "99.95%",
-  //   bufferingRate: "0.4%",
-  // },
+  },
+  {
+    id: "Fifa",
+    name: "beIN Sports",
+    logo: "/logos/tsports.svg",
+    videoUrl: "http://fifalive.click/pc-pot.m3u",
+    backupUrl: "http://fifalive.click/pc-pot.m3u",
+    status: "online",
+    viewers: "0",
+    group: "Sports Europe",
+    description: "beIN Sports is the premier destination for international soccer, featuring La Liga, Ligue 1, Serie A, and UEFA Champions League.",
+    uptime: "99.95%",
+    bufferingRate: "0.4%",
+  },
   // {
   //   id: "t-sports",
   //   name: "T Sports",
@@ -179,12 +179,12 @@ export const AppProvider = ({ children }) => {
       const hasVisited = localStorage.getItem("sl_has_visited");
       const hasSession = sessionStorage.getItem("sl_session");
       const { data, error } = await supabase.from('site_stats').select('*').eq('id', 1).single();
-      
+
       if (!error && data) {
         let newVisitors = data.total_visitors;
         let newViews = data.total_views;
         let shouldUpdateDb = false;
-        
+
         if (!hasVisited) {
           newVisitors += 1;
           localStorage.setItem("sl_has_visited", "true");
@@ -196,10 +196,10 @@ export const AppProvider = ({ children }) => {
           sessionStorage.setItem("sl_session", "true");
           shouldUpdateDb = true;
         }
-        
+
         setTotalVisitors(newVisitors);
         setTotalViews(newViews);
-        
+
         if (shouldUpdateDb) {
           supabase.from('site_stats').update({
             total_visitors: newVisitors,
